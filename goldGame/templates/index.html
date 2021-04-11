@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ninja Gold</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+  <body>
+    <div id="main">
+      <form id="score-form">
+        {% csrf_token %}
+        <label for="score">Your Gold:</label>
+        <input type="text" name="score" value="{{request.session.gold}}" readonly />
+      </form>
+      <form action="/clear" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Play Again" />
+      </form>
+      <div id="places">
+        <div id="farm" class="place-box">
+          <h2>Farm</h2>
+          <p>(earns 10-20 gold)</p>
+          <form action="process_money" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="farm" />
+            <input type="submit" value="Find Gold!" />
+          </form>
+        </div>
+        <div id="cave" class="place-box">
+          <h2>Cave</h2>
+          <p>(earns 5-10 gold)</p>
+          <form action="process_money" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="cave" />
+            <input type="submit" value="Find Gold!" />
+          </form>
+        </div>
+        <div id="house" class="place-box">
+          <h2>House</h2>
+          <p>(earns 2-5 gold)</p>
+          <form action="process_money" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="house" />
+            <input type="submit" value="Find Gold!" />
+          </form>
+        </div>
+        <div id="casino" class="place-box">
+          <h2>Casino</h2>
+          <p>(earns/takes 0-50 gold)</p>
+          <form action="process_money" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="casino" />
+            <input type="submit" value="Find Gold!" />
+          </form>
+        </div>
+      </div>
+      <div id="activities">
+        <p>Activities:</p>
+        <div id="activity-box">
+          {% for update in request.session.updates %}
+          <p class="{{ update.color }}">{{ update.text }} {{update.time}}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
